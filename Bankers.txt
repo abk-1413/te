@@ -1,0 +1,96 @@
+import java.util.*;
+
+public class Bankers {
+    private int[][] need, allocate, max;
+    private int[] avail;
+    private int np, nr;
+
+    private void input() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter number of processes and resources:");
+        np = sc.nextInt();
+        nr = sc.nextInt();
+
+        // Initialize matrices and arrays
+        need = new int[np][nr];
+        max = new int[np][nr];
+        allocate = new int[np][nr];
+        avail = new int[nr];
+
+        // Input allocation matrix
+        System.out.println("Enter Allocation Matrix:");
+        for (int i = 0; i < np; i++) {
+            for (int j = 0; j < nr; j++) {
+                allocate[i][j] = sc.nextInt();
+            }
+        }
+
+        // Input maximum need matrix
+        System.out.println("Enter Maximum Need Matrix:");
+        for (int i = 0; i < np; i++) {
+            for (int j = 0; j < nr; j++) {
+                max[i][j] = sc.nextInt();
+            }
+        }
+
+        // Input available resources
+        System.out.println("Enter Available Resources:");
+        for (int j = 0; j < nr; j++) {
+            avail[j] = sc.nextInt();
+        }
+
+        // Don’t close Scanner to avoid System.in issues
+    }
+
+    private void calc_need() {
+        for (int i = 0; i < np; i++) {
+            for (int j = 0; j < nr; j++) {
+                need[i][j] = max[i][j] - allocate[i][j];
+            }
+        }
+    }
+
+    private boolean check(int i) {
+        for (int j = 0; j < nr; j++) {
+            if (avail[j] < need[i][j])
+                return false;
+        }
+        return true;
+    }
+
+    public void isSafe() {
+        input();
+        calc_need();
+
+        boolean[] done = new boolean[np];
+        int j = 0;
+
+        System.out.println("\nSafe Sequence Check:");
+        while (j < np) {
+            boolean allocated = false;
+            for (int i = 0; i < np; i++) {
+                if (!done[i] && check(i)) {
+                    // Release allocated resources
+                    for (int k = 0; k < nr; k++) {
+                        avail[k] += allocate[i][k];
+                    }
+                    System.out.println("→ Process " + i + " executed safely");
+                    done[i] = true;
+                    allocated = true;
+                    j++;
+                }
+            }
+            if (!allocated) break;
+        }
+
+        if (j == np)
+            System.out.println("\n✅ System is in a SAFE state!");
+        else
+            System.out.println("\n⚠️ System is NOT in a safe state (deadlock possible).");
+    }
+
+    public static void main(String[] args) {
+        new Bankers().isSafe();
+    }
+}
