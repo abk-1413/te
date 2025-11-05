@@ -1,0 +1,230 @@
+🧩 Program Overview
+
+Concept: FIFO (First In First Out) Page Replacement
+
+Goal: Simulate how pages are replaced in memory when a new page needs to be loaded
+
+Inputs:
+
+Number of frames (physical memory slots)
+
+Number of pages (length of reference string)
+
+The reference string (sequence of page requests)
+
+Outputs:
+
+Step-by-step page replacement process
+
+Total page hits and faults
+
+🧠 Line-by-Line Explanation
+Import package
+import java.util.*;
+
+
+Imports Java’s utility package which includes:
+
+Scanner for user input
+
+Queue and LinkedList for FIFO queue operations
+
+Class Declaration
+public class FIFO_PageReplacement {
+    public static void main(String[] args) {
+
+
+Defines the main class FIFO_PageReplacement.
+
+main() is the entry point of the program.
+
+Step 1 – Input number of frames
+Scanner sc = new Scanner(System.in);
+
+System.out.print("Enter number of frames: ");
+int framesCount = sc.nextInt();
+
+
+Creates a Scanner object to take input.
+
+Prompts user for number of frames — the number of pages that can be held in memory at one time.
+
+📘 Example:
+If framesCount = 3, it means memory can hold only 3 pages simultaneously.
+
+Step 2 – Input number of pages
+System.out.print("Enter number of pages: ");
+int pagesCount = sc.nextInt();
+
+
+Asks how many pages are in the reference string (sequence of pages requested by CPU).
+
+Step 3 – Input reference string
+int[] pages = new int[pagesCount];
+
+System.out.println("Enter the reference string:");
+for (int i = 0; i < pagesCount; i++) {
+    pages[i] = sc.nextInt();
+}
+
+
+Creates an array pages[] to store the page reference sequence.
+
+Example input:
+
+7 0 1 2 0 3 0 4 2 3
+
+
+represents the order of page requests from memory.
+
+Step 4 – Initialize FIFO Queue
+Queue<Integer> frames = new LinkedList<>();
+int pageFaults = 0, pageHits = 0;
+
+
+frames: represents the memory using a queue (FIFO behavior).
+
+The first inserted page is the first to be removed.
+
+pageFaults: counts how many times a new page had to be brought into memory.
+
+pageHits: counts how many times the requested page was already in memory.
+
+Step 5 – Begin simulation
+System.out.println("\nPage Replacement Process (FIFO):");
+
+
+Prints a heading for the simulation steps.
+
+Step 6 – Process each page one by one
+for (int i = 0; i < pagesCount; i++) {
+    int currentPage = pages[i];
+
+
+Loops through all pages in the reference string.
+
+currentPage holds the page currently being requested by the CPU.
+
+Step 7 – Check for page hit or fault
+if (frames.contains(currentPage)) {
+    // Page Hit
+    pageHits++;
+    System.out.println("Page " + currentPage + " => HIT   | Frames: " + frames);
+} else {
+    // Page Fault
+    pageFaults++;
+    if (frames.size() == framesCount) {
+        int removed = frames.poll(); // remove oldest page
+        System.out.println("Page " + removed + " removed.");
+    }
+    frames.add(currentPage);
+    System.out.println("Page " + currentPage + " => FAULT | Frames: " + frames);
+}
+
+
+Now let’s break this logic:
+
+🔹 Case 1: Page Hit
+if (frames.contains(currentPage)) {
+    pageHits++;
+    System.out.println("Page " + currentPage + " => HIT   | Frames: " + frames);
+}
+
+
+Checks if the current page already exists in the frames (memory).
+
+If yes → Page Hit (no need to replace anything).
+
+Displays the current frame content.
+
+🔹 Case 2: Page Fault
+else {
+    pageFaults++;
+    if (frames.size() == framesCount) {
+        int removed = frames.poll();
+        System.out.println("Page " + removed + " removed.");
+    }
+    frames.add(currentPage);
+    System.out.println("Page " + currentPage + " => FAULT | Frames: " + frames);
+}
+
+
+Page Fault occurs when the requested page is not in memory.
+
+Steps:
+
+Increase fault count.
+
+If memory is full (frames.size() == framesCount):
+
+Remove the oldest page using poll() → FIFO removal.
+
+Display which page was removed.
+
+Add the new page to memory using add().
+
+Display updated frame content.
+
+📘 FIFO Rule:
+The page that entered first leaves first when memory is full.
+
+Step 8 – Display totals
+System.out.println("\nTotal Page Hits   = " + pageHits);
+System.out.println("Total Page Faults = " + pageFaults);
+
+
+Prints the final results after all pages are processed.
+
+Step 9 – Close scanner
+sc.close();
+
+
+Releases system resources used by the Scanner object.
+
+🧮 Example Execution
+Input:
+Enter number of frames: 3
+Enter number of pages: 7
+Enter the reference string:
+1 3 0 3 5 6 3
+
+Output:
+Page Replacement Process (FIFO):
+Page 1 => FAULT | Frames: [1]
+Page 3 => FAULT | Frames: [1, 3]
+Page 0 => FAULT | Frames: [1, 3, 0]
+Page 3 => HIT   | Frames: [1, 3, 0]
+Page 5 removed.
+Page 1 removed.
+Page 5 => FAULT | Frames: [3, 0, 5]
+Page 6 removed.
+Page 3 removed.
+Page 6 => FAULT | Frames: [0, 5, 6]
+Page 3 => FAULT | Frames: [5, 6, 3]
+
+Total Page Hits   = 1
+Total Page Faults = 6
+
+📘 Concept Recap
+Term	Meaning
+Page Hit	Page is already in memory
+Page Fault	Page not in memory → must be loaded
+FIFO	Replace the oldest loaded page first
+Queue	Best structure for FIFO (first in, first out)
+🧠 Algorithm Summary
+
+Initialize an empty queue for frames.
+
+For each page request:
+
+If page exists → HIT.
+
+Else → FAULT.
+
+If memory full → remove oldest page.
+
+Add new page to queue.
+
+Count total hits and faults.
+
+Display the process.

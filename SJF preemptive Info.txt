@@ -1,0 +1,246 @@
+🧩 1. Import Statement
+import java.util.*;
+
+
+Imports all classes from the java.util package.
+
+This allows the use of Scanner for input and other utilities if needed.
+
+⚙️ 2. Process Class Definition
+class Process {
+    int id, at, bt, ct, tat, wt, rt;
+    int remainingBt;
+    boolean isCompleted = false;
+}
+
+
+This Process class holds all the data for each process:
+
+Variable	Meaning
+id	Process ID (like P1, P2, etc.)
+at	Arrival Time – when the process arrives in the ready queue
+bt	Burst Time – total CPU time required
+ct	Completion Time – time at which the process finishes
+tat	Turnaround Time = CT − AT
+wt	Waiting Time = TAT − BT
+rt	Response Time = first CPU allocation − AT
+remainingBt	Remaining Burst Time for the process
+isCompleted	Marks if the process has finished execution
+
+🧠 This structure helps keep all process attributes together for easy access during scheduling.
+
+🧠 3. Main Class and Input
+public class SJF_Preemptive {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+
+Starts the main execution and creates a Scanner for user input.
+
+🧾 4. Number of Processes
+        System.out.print("Enter number of processes: ");
+        int n = sc.nextInt();
+
+        Process[] p = new Process[n];
+
+
+Reads the number of processes.
+
+Creates an array of Process objects to hold all process data.
+
+🧮 5. Input Process Details
+        for (int i = 0; i < n; i++) {
+            p[i] = new Process();
+            p[i].id = i + 1;
+            System.out.print("Enter Arrival time of P" + (i + 1) + ": ");
+            p[i].at = sc.nextInt();
+            System.out.print("Enter Burst time of P" + (i + 1) + ": ");
+            p[i].bt = sc.nextInt();
+            p[i].remainingBt = p[i].bt;
+        }
+
+
+For each process:
+
+Creates a new Process object.
+
+Takes user input for arrival time and burst time.
+
+Initializes remainingBt = bt (since no CPU time has been used yet).
+
+🧠 Example Input:
+
+Enter number of processes: 3
+Enter Arrival time of P1: 0
+Enter Burst time of P1: 7
+Enter Arrival time of P2: 2
+Enter Burst time of P2: 4
+Enter Arrival time of P3: 4
+Enter Burst time of P3: 1
+
+🕒 6. Initialize Time and Counters
+        int time = 0, completed = 0;
+        int sumTAT = 0, sumWT = 0, sumRT = 0;
+
+
+time → keeps track of the current simulation time.
+
+completed → how many processes have finished.
+
+sumTAT, sumWT, sumRT → used to calculate averages later.
+
+🔁 7. Main Simulation Loop
+        while (completed != n) {
+
+
+The loop runs until all processes are completed.
+
+⚙️ 8. Find Process with Shortest Remaining Time
+            int idx = -1;
+            int minBT = Integer.MAX_VALUE;
+
+            for (int i = 0; i < n; i++) {
+                if (p[i].at <= time && !p[i].isCompleted && p[i].remainingBt < minBT) {
+                    minBT = p[i].remainingBt;
+                    idx = i;
+                }
+            }
+
+
+Initially, idx = -1 (no process selected).
+
+Loops through all processes:
+
+Checks if process has arrived (at <= time).
+
+Checks if it’s not completed.
+
+Finds the process with the shortest remaining burst time.
+
+idx stores the index of the process to execute next.
+
+🧠 This is the heart of preemptive SJF — at every unit of time, the process with the smallest remaining time is chosen.
+
+🔨 9. Execute the Chosen Process
+            if (idx != -1) {
+                if (p[idx].remainingBt == p[idx].bt) {
+                    p[idx].rt = time - p[idx].at;
+                }
+
+                p[idx].remainingBt--;
+                time++;
+
+Explanation:
+
+If a process is being executed for the first time, its response time = current time − arrival time.
+
+Then:
+
+Decrease its remainingBt by 1 (executed for 1 unit time).
+
+Increment the simulation time by 1.
+
+⏱️ The CPU executes processes unit by unit, checking at every step if a new, shorter process has arrived.
+
+✅ 10. When a Process Completes
+                if (p[idx].remainingBt == 0) {
+                    p[idx].ct = time;
+                    p[idx].tat = p[idx].ct - p[idx].at;
+                    p[idx].wt = p[idx].tat - p[idx].bt;
+
+                    sumTAT += p[idx].tat;
+                    sumWT += p[idx].wt;
+                    sumRT += p[idx].rt;
+
+                    p[idx].isCompleted = true;
+                    completed++;
+                }
+
+
+Once remainingBt == 0, the process is finished.
+
+Calculate:
+
+CT = current time
+
+TAT = CT - AT
+
+WT = TAT - BT
+
+Add to totals for averaging later.
+
+Mark process as completed.
+
+Increment completed count.
+
+⏸️ 11. If No Process Available
+            } else {
+                time++;
+            }
+
+
+If no process has arrived yet (idx == -1), the CPU remains idle, and time moves forward by 1.
+
+📊 12. Display Output Table
+        System.out.println("\nPID\tAT\tBT\tCT\tTAT\tWT\tRT");
+        for (int i = 0; i < n; i++) {
+            System.out.println("P" + p[i].id + "\t" + p[i].at + "\t" + p[i].bt + "\t" +
+                    p[i].ct + "\t" + p[i].tat + "\t" + p[i].wt + "\t" + p[i].rt);
+        }
+
+
+Prints a formatted result table for all processes:
+
+PID	AT	BT	CT	TAT	WT	RT
+Process ID	Arrival	Burst	Completion	Turnaround	Waiting	Response
+📈 13. Average Calculations
+        System.out.printf("\nAverage TAT: %.2f", (sumTAT / (float) n));
+        System.out.printf("\nAverage WT: %.2f", (sumWT / (float) n));
+        System.out.printf("\nAverage RT: %.2f\n", (sumRT / (float) n));
+
+
+Computes and prints average turnaround, waiting, and response times with 2 decimal precision.
+
+🔚 14. Close Scanner
+        sc.close();
+    }
+}
+
+
+Closes input stream to avoid resource leaks.
+
+💡 Example Execution
+Input:
+Enter number of processes: 3
+Enter Arrival time of P1: 0
+Enter Burst time of P1: 7
+Enter Arrival time of P2: 2
+Enter Burst time of P2: 4
+Enter Arrival time of P3: 4
+Enter Burst time of P3: 1
+
+Step-by-Step Execution Timeline (Gantt Chart):
+Time	Executing Process	Remaining Burst
+0–2	P1	5 left
+2–4	P2 (shorter burst arrives)	2 left
+4–5	P3 (shortest new process)	0 left ✅
+5–7	P2	0 left ✅
+7–12	P1	0 left ✅
+Final Table:
+PID	AT	BT	CT	TAT	WT	RT
+P1	0	7	12	12	5	0
+P2	2	4	7	5	1	0
+P3	4	1	5	1	0	0
+Averages:
+Average TAT = 6.00
+Average WT  = 2.00
+Average RT  = 0.00
+
+🧠 Key Concepts Recap
+Term	Formula	Meaning
+SJF Preemptive (SRTF)	Picks process with shortest remaining time at each unit.	
+Turnaround Time (TAT)	CT − AT	
+Waiting Time (WT)	TAT − BT	
+Response Time (RT)	First CPU time − AT	
+CPU Idle Time	Time when no process has arrived.	
+Preemption	When a running process is paused for a shorter job.	

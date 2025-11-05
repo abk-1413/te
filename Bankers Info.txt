@@ -1,0 +1,205 @@
+The Banker’s Algorithm ensures that the system never enters an unsafe state (i.e., no deadlock occurs).
+It does so by checking if a sequence exists in which all processes can complete without causing a resource shortage.
+
+⚙️ Core Concepts
+Term	Meaning
+Allocation Matrix	Resources currently allocated to each process
+Max Matrix	Maximum resources each process may need
+Need Matrix	Need = Max - Allocation
+Available Vector	Resources currently available in the system
+Safe Sequence	Order in which processes can safely execute
+🧠 Step-by-Step Code Explanation
+1. Class and Variables
+public class Bankers {
+    private int[][] need, allocate, max;
+    private int[] avail;
+    private int np, nr;
+
+
+np → number of processes
+
+nr → number of resource types
+
+allocate[i][j] → how many units of resource j are allocated to process i
+
+max[i][j] → maximum demand of process i for resource j
+
+need[i][j] = max[i][j] - allocate[i][j]
+
+avail[j] → number of available units for resource j
+
+2. Input Section
+private void input() {
+    Scanner sc = new Scanner(System.in);
+
+    System.out.println("Enter number of processes and resources:");
+    np = sc.nextInt();
+    nr = sc.nextInt();
+
+
+Reads total number of processes and resource types.
+
+Input Allocation Matrix
+    System.out.println("Enter Allocation Matrix:");
+    for (int i = 0; i < np; i++) {
+        for (int j = 0; j < nr; j++) {
+            allocate[i][j] = sc.nextInt();
+        }
+    }
+
+
+Takes matrix of currently allocated resources to each process.
+
+Input Maximum Matrix
+    System.out.println("Enter Maximum Need Matrix:");
+    for (int i = 0; i < np; i++) {
+        for (int j = 0; j < nr; j++) {
+            max[i][j] = sc.nextInt();
+        }
+    }
+
+
+Takes each process’s maximum resource need.
+
+Input Available Resources
+    System.out.println("Enter Available Resources:");
+    for (int j = 0; j < nr; j++) {
+        avail[j] = sc.nextInt();
+    }
+
+
+Inputs how many instances of each resource are currently free.
+
+3. Need Matrix Calculation
+private void calc_need() {
+    for (int i = 0; i < np; i++) {
+        for (int j = 0; j < nr; j++) {
+            need[i][j] = max[i][j] - allocate[i][j];
+        }
+    }
+}
+
+Formula	Meaning
+Need[i][j] = Max[i][j] - Allocation[i][j]	How many more resources process i may still require
+
+🧠 This is crucial for determining whether a process can safely proceed given current resources.
+
+4. Safety Check for Each Process
+private boolean check(int i) {
+    for (int j = 0; j < nr; j++) {
+        if (avail[j] < need[i][j])
+            return false;
+    }
+    return true;
+}
+
+
+Returns true if available resources ≥ needed resources for process i.
+
+5. Safe Sequence Determination
+public void isSafe() {
+    input();
+    calc_need();
+
+    boolean[] done = new boolean[np];
+    int j = 0;
+
+    System.out.println("\nSafe Sequence Check:");
+
+
+Initializes a boolean array done[] to track which processes are finished.
+
+j counts how many processes have completed.
+
+6. Main Algorithm Loop
+    while (j < np) {
+        boolean allocated = false;
+        for (int i = 0; i < np; i++) {
+            if (!done[i] && check(i)) {
+                for (int k = 0; k < nr; k++) {
+                    avail[k] += allocate[i][k];
+                }
+                System.out.println("→ Process " + i + " executed safely");
+                done[i] = true;
+                allocated = true;
+                j++;
+            }
+        }
+        if (!allocated) break;
+    }
+
+🔍 What happens here:
+
+Loops through all processes:
+
+If process i is not completed and can be allocated safely (check(i) is true):
+
+It “executes” (releases resources).
+
+Adds its allocated resources back to the available pool:
+
+avail[k] += allocate[i][k];
+
+
+Marks process as done.
+
+Prints safe execution message.
+
+If no process could be allocated in an entire pass (allocated = false), the system is unsafe → potential deadlock.
+
+7. Final Output
+    if (j == np)
+        System.out.println("\n✅ System is in a SAFE state!");
+    else
+        System.out.println("\n⚠️ System is NOT in a safe state (deadlock possible).");
+}
+
+8. Main Function
+public static void main(String[] args) {
+    new Bankers().isSafe();
+}
+
+
+Creates an object of Bankers and runs the safety algorithm.
+
+🧮 Example Input/Output
+Input:
+Enter number of processes and resources:
+5 3
+
+Enter Allocation Matrix:
+0 1 0
+2 0 0
+3 0 2
+2 1 1
+0 0 2
+
+Enter Maximum Need Matrix:
+7 5 3
+3 2 2
+9 0 2
+2 2 2
+4 3 3
+
+Enter Available Resources:
+3 3 2
+
+Output:
+Safe Sequence Check:
+→ Process 1 executed safely
+→ Process 3 executed safely
+→ Process 4 executed safely
+→ Process 0 executed safely
+→ Process 2 executed safely
+
+✅ System is in a SAFE state!
+
+
+✅ Safe Sequence: P1 → P3 → P4 → P0 → P2
+
+🧠 Key Takeaways
+Concept	Description
+Need Matrix	Tells remaining resource requirements
+Safe State	Exists if at least one order of execution allows all processes to finish
+Deadlock	If no process can safely execute (unsafe state)
+Purpose	Banker’s Algorithm prevents deadlocks dynamically

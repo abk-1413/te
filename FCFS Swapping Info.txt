@@ -1,0 +1,219 @@
+🧩 Program Overview
+
+Algorithm: FCFS (non-preemptive)
+
+Goal: Schedule processes in order of their arrival times and compute:
+
+Completion Time (CT)
+
+Turnaround Time (TAT)
+
+Waiting Time (WT)
+
+Swapping: Used to sort processes by arrival time before execution
+
+🧠 Line-by-Line Explanation
+Import
+import java.util.*;
+
+
+Imports all classes from the java.util package.
+
+Needed here for the Scanner class (for user input).
+
+Class Declaration
+public class FCFS_Swapping {
+    public static void main(String[] args) {
+
+
+Defines the main class FCFS_Swapping.
+
+main() is the entry point of the program.
+
+Step 1 – Input number of processes
+Scanner sc = new Scanner(System.in);
+System.out.print("Enter number of processes: ");
+int n = sc.nextInt();
+
+
+Creates a Scanner object to take input.
+
+Reads the number of processes n.
+
+Declaring Arrays
+int pid[] = new int[n]; // Process IDs
+int at[] = new int[n];  // Arrival Times
+int bt[] = new int[n];  // Burst Times
+int ct[] = new int[n];  // Completion Times
+int tat[] = new int[n]; // Turnaround Times
+int wt[] = new int[n];  // Waiting Times
+
+
+Each array holds data for n processes:
+
+pid: Process ID (P1, P2, …)
+
+at: Arrival Time
+
+bt: Burst Time
+
+ct: Completion Time
+
+tat: Turnaround Time
+
+wt: Waiting Time
+
+Step 2 – Input process details
+for (int i = 0; i < n; i++) {
+    pid[i] = i + 1;
+    System.out.print("Enter arrival time for P" + pid[i] + ": ");
+    at[i] = sc.nextInt();
+    System.out.print("Enter burst time for P" + pid[i] + ": ");
+    bt[i] = sc.nextInt();
+}
+
+
+Loops through each process:
+
+Assigns process ID as P1, P2, etc.
+
+Takes user input for:
+
+Arrival time (at[i])
+
+Burst time (bt[i])
+
+Step 3 – Sorting by Arrival Time
+for (int i = 0; i < n - 1; i++) {
+    for (int j = i + 1; j < n; j++) {
+        if (at[i] > at[j]) {
+            // Swap arrival time
+            int temp = at[i];
+            at[i] = at[j];
+            at[j] = temp;
+
+            // Swap burst time
+            temp = bt[i];
+            bt[i] = bt[j];
+            bt[j] = temp;
+
+            // Swap process ID
+            temp = pid[i];
+            pid[i] = pid[j];
+            pid[j] = temp;
+        }
+    }
+}
+
+
+🔁 This section sorts the processes in ascending order of Arrival Time (AT).
+
+FCFS executes processes as they arrive, so sorting ensures correct order.
+
+Swapping is used to maintain alignment between arrival times, burst times, and process IDs.
+
+Example:
+Before sort → AT = [5, 1, 2]
+After sort → AT = [1, 2, 5]
+
+Step 4 – Calculate Completion Time (CT)
+ct[0] = at[0] + bt[0]; // First process
+for (int i = 1; i < n; i++) {
+    if (at[i] > ct[i - 1]) {
+        // CPU is idle until process arrives
+        ct[i] = at[i] + bt[i];
+    } else {
+        ct[i] = ct[i - 1] + bt[i];
+    }
+}
+
+
+🧮 Logic:
+
+For first process: CT = AT + BT
+
+For others:
+
+If CPU becomes idle (next process arrives after previous finishes):
+
+Start new process when it arrives: CT = AT + BT
+
+Otherwise:
+
+Start immediately after last completion: CT = previous CT + BT
+
+Example:
+
+Process	AT	BT	CT
+P1	0	3	3
+P2	2	4	7
+P3	5	2	9
+Step 5 – Calculate TAT & WT
+for (int i = 0; i < n; i++) {
+    tat[i] = ct[i] - at[i];
+    wt[i] = tat[i] - bt[i];
+}
+
+
+Formulas:
+
+Turnaround Time (TAT) = CT - AT
+
+Waiting Time (WT) = TAT - BT
+
+These are standard scheduling metrics:
+
+Term	Meaning
+TAT	Total time a process spends in the system
+WT	Time a process waits in the ready queue
+Step 6 – Display Results
+System.out.println("\nPID\tAT\tBT\tCT\tTAT\tWT");
+for (int i = 0; i < n; i++) {
+    System.out.println("P" + pid[i] + "\t" + at[i] + "\t" + bt[i] +
+            "\t" + ct[i] + "\t" + tat[i] + "\t" + wt[i]);
+}
+
+
+🖨️ Prints all calculated values in a neat tabular format:
+
+PID	AT	BT	CT	TAT	WT
+P1	0	4	4	4	0
+P2	1	3	7	6	3
+P3	2	2	9	7	5
+
+Close Scanner
+sc.close();
+
+
+Frees the input stream resource.
+
+✅ Sample Input/Output
+Input:
+Enter number of processes: 3
+Enter arrival time for P1: 2
+Enter burst time for P1: 3
+Enter arrival time for P2: 0
+Enter burst time for P2: 4
+Enter arrival time for P3: 5
+Enter burst time for P3: 2
+
+Output:
+PID	AT	BT	CT	TAT	WT
+P2	0	4	4	4	0
+P1	2	3	7	5	2
+P3	5	2	9	4	2
+
+🧮 Formulas Recap
+Metric	Formula
+Completion Time (CT)	Time at which process finishes
+Turnaround Time (TAT)	CT - AT
+Waiting Time (WT)	TAT - BT
+🧠 Key Takeaways
+
+FCFS is non-preemptive (once process starts, it runs till completion).
+
+Processes are executed in order of arrival.
+
+If CPU becomes idle (gap between CT and next AT), it waits.
+
+This version sorts processes by Arrival Time using swapping, hence the name FCFS_Swapping

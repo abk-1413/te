@@ -1,0 +1,253 @@
+🧩 1. Import & Class Declaration
+import java.util.Scanner;
+
+public class PriorityNonPreemptiveEasy {
+
+
+import java.util.Scanner; → Imports the Scanner class used for user input from the console.
+
+public class PriorityNonPreemptiveEasy → Declares the class (name suggests it's a simplified version of priority scheduling).
+
+🧠 2. main() method and Scanner
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+
+Defines the main entry point of the program.
+
+Creates a Scanner object sc for reading input from the user (keyboard).
+
+🏁 3. Take the number of processes
+        // Input number of processes
+        System.out.print("Enter number of processes: ");
+        int n = sc.nextInt();
+
+
+Prompts the user for total number of processes to schedule.
+
+Stores that number in n.
+
+📊 4. Declare arrays for process data
+        int[] bt = new int[n];   // Burst times
+        int[] pr = new int[n];   // Priorities
+        int[] wt = new int[n];   // Waiting times
+        int[] tat = new int[n];  // Turnaround times
+        int[] pid = new int[n];  // Process IDs
+
+
+Each array is of size n:
+
+bt[i]: Burst Time (execution time required by process i).
+
+pr[i]: Priority of process i (smaller number = higher priority).
+
+wt[i]: Waiting time of process i.
+
+tat[i]: Turnaround time (waiting time + burst time).
+
+pid[i]: Process IDs (e.g., P1, P2, P3...).
+
+💬 5. Input burst times & priorities
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter burst time for Process " + (i + 1) + ": ");
+            bt[i] = sc.nextInt();
+            System.out.print("Enter priority for Process " + (i + 1) + ": ");
+            pr[i] = sc.nextInt();
+            pid[i] = i + 1;
+        }
+
+
+Loops through each process index i (0 to n-1).
+
+Takes user input for:
+
+Burst time,
+
+Priority.
+
+Assigns process ID as (i+1) (so process 1, 2, 3, ...).
+
+🧠 Example input:
+
+Enter number of processes: 3
+Enter burst time for Process 1: 4
+Enter priority for Process 1: 2
+Enter burst time for Process 2: 3
+Enter priority for Process 2: 1
+Enter burst time for Process 3: 5
+Enter priority for Process 3: 3
+
+🔄 6. Sort processes by priority
+        // Sort processes by priority (lower number = higher priority)
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (pr[i] > pr[j]) {
+                    // swap priority
+                    int temp = pr[i];
+                    pr[i] = pr[j];
+                    pr[j] = temp;
+
+                    // swap burst time
+                    temp = bt[i];
+                    bt[i] = bt[j];
+                    bt[j] = temp;
+
+                    // swap process id
+                    temp = pid[i];
+                    pid[i] = pid[j];
+                    pid[j] = temp;
+                }
+            }
+        }
+
+Explanation:
+
+The nested loops sort the processes in ascending order of priority.
+
+If pr[i] > pr[j], it means process i has lower priority (since higher number means lower priority), so we swap them.
+
+Whenever we swap priorities, we also swap:
+
+Corresponding burst times (bt),
+
+And process IDs (pid).
+
+🧠 So after sorting, all arrays are aligned properly — highest priority process comes first.
+
+Example (before & after sorting):
+
+PID	BT	Priority
+P1	4	2
+P2	3	1
+P3	5	3
+
+After sorting:
+
+PID	BT	Priority
+P2	3	1
+P1	4	2
+P3	5	3
+⏱️ 7. Calculate Waiting Time (WT) & Turnaround Time (TAT)
+        // Calculate waiting time and turnaround time
+        wt[0] = 0;
+        tat[0] = bt[0];
+        for (int i = 1; i < n; i++) {
+            wt[i] = wt[i - 1] + bt[i - 1];
+            tat[i] = wt[i] + bt[i];
+        }
+
+Step-by-step:
+
+First process always has 0 waiting time because it starts immediately.
+
+Turnaround time for first process = burst time (since no wait).
+
+For each subsequent process:
+
+Waiting time = sum of burst times of all previous processes.
+
+Turnaround time = its own burst time + its waiting time.
+
+🧮 Example:
+
+PID	BT	WT	TAT
+P2	3	0	3
+P1	4	3	7
+P3	5	7	12
+🖨️ 8. Display Output Table
+        // Print results
+        System.out.println("\nProcess\tBurst Time\tPriority\tWaiting Time\tTurnaround Time");
+        System.out.println("---------------------------------------------------------------");
+
+        int totalWT = 0, totalTAT = 0;
+        for (int i = 0; i < n; i++) {
+            System.out.printf("P%-7d%-15d%-15d%-15d%-15d%n",
+                    pid[i], bt[i], pr[i], wt[i], tat[i]);
+            totalWT += wt[i];
+            totalTAT += tat[i];
+        }
+
+Breakdown:
+
+Prints header for the output table.
+
+Iterates through each process and prints:
+
+Process ID
+
+Burst Time
+
+Priority
+
+Waiting Time
+
+Turnaround Time
+
+Uses System.out.printf for aligned, neat table formatting.
+
+Accumulates total waiting and turnaround times to calculate averages later.
+
+🧾 Example output:
+
+Process Burst Time   Priority   Waiting Time   Turnaround Time
+---------------------------------------------------------------
+P2      3             1           0              3
+P1      4             2           3              7
+P3      5             3           7              12
+
+📈 9. Calculate and Print Averages
+        // Print averages
+        System.out.println("\nAverage Waiting Time = " + (float) totalWT / n);
+        System.out.println("Average Turnaround Time = " + (float) totalTAT / n);
+
+
+Divides total waiting time and turnaround time by number of processes.
+
+Casts to float for decimal results.
+
+Displays average waiting and turnaround times.
+
+Example:
+
+Average Waiting Time = 3.3333333
+Average Turnaround Time = 7.3333333
+
+🔚 10. Close the Scanner
+        sc.close();
+    }
+}
+
+
+Closes the Scanner object to free resources.
+
+🧮 Final Example (Full run)
+
+Input:
+
+Enter number of processes: 3
+Enter burst time for Process 1: 4
+Enter priority for Process 1: 2
+Enter burst time for Process 2: 3
+Enter priority for Process 2: 1
+Enter burst time for Process 3: 5
+Enter priority for Process 3: 3
+
+
+Output:
+
+Process Burst Time   Priority   Waiting Time   Turnaround Time
+---------------------------------------------------------------
+P2      3             1           0              3
+P1      4             2           3              7
+P3      5             3           7              12
+
+Average Waiting Time = 3.3333333
+Average Turnaround Time = 7.3333333
+
+⚙️ Summary of Key Concepts
+Concept	Description
+Priority Scheduling	Each process has a priority number; lower number means higher priority.
+Non-preemptive	Once a process starts, it runs until completion. No interruption.
+Waiting Time (WT)	Time process waits in ready queue before execution.
+Turnaround Time (TAT)	Total time from arrival to completion (WT + BT).
+Sorting	Processes are sorted by priority before calculating WT and TAT.

@@ -1,0 +1,324 @@
+🧩 Overview
+🧠 What is a Macro Processor?
+
+In assembly language, a macro is like a function that expands inline when called.
+
+For example:
+
+MACRO
+ADDNUM &ARG1, &ARG2
+LDA &ARG1
+ADD &ARG2
+STA RESULT
+MEND
+
+
+When invoked as:
+
+ADDNUM NUM1, NUM2
+
+
+…the assembler expands it automatically to:
+
+LDA NUM1
+ADD NUM2
+STA RESULT
+
+
+So this code builds:
+
+MNT (Macro Name Table) – stores macro names and their MDT index.
+
+MDT (Macro Definition Table) – stores macro body (instructions).
+
+ADT (Argument Definition Table) – stores macro arguments.
+
+🧠 Line-by-Line Explanation
+Import Libraries
+import java.util.*;
+import java.io.*;
+
+
+java.util.* → For StringTokenizer, Arrays, etc.
+
+java.io.* → For file input/output operations.
+
+Class Declaration
+public class Macro {
+    public static void main(String args[]) {
+
+
+Defines the class Macro and the entry point main() method.
+
+Variable Declarations
+BufferedReader br;
+String input = null;
+String tt = null;
+String arg = null;
+String macroTokens = null;
+
+
+BufferedReader br → To read the input file line by line.
+
+input → Holds the current line read from the file.
+
+tt, arg, macroTokens → Temporary strings used to process tokens from each line.
+
+Arrays for Macro Tables
+String mnt[] = new String[10];
+String mdt[] = new String[20];
+String AR[] = new String[20];
+int macroindex[] = new int[10];
+
+Variable	Meaning	Example
+mnt[]	Macro Name Table – stores macro names	["ADDNUM", "SUBNUM"]
+mdt[]	Macro Definition Table – stores macro body lines	["LDA AR0", "ADD AR1", "MEND"]
+AR[]	Argument list (formal parameters)	[&ARG1, &ARG2]
+macroindex[]	Keeps track of where each macro starts in MDT	[1, 5, …]
+Counters and Flags
+int mcount = 0, arg_count = 0;
+int index = 1;
+int macro_enc = 0;
+
+Variable	Meaning
+mcount	Number of macros defined
+arg_count	Number of arguments in current macro
+index	Keeps line index for MDT
+macro_enc	A flag – 1 means currently inside a macro definition, 0 means outside
+Open Input and Output Files
+br = new BufferedReader(new FileReader("Input.txt"));
+File f3 = new File("mnt.txt");
+File f4 = new File("mdt.txt");
+File f5 = new File("adt.txt");
+PrintWriter p3 = new PrintWriter(f3);
+PrintWriter p4 = new PrintWriter(f4);
+PrintWriter p5 = new PrintWriter(f5);
+
+
+Reads from Input.txt → source assembly program with macros.
+
+Writes output to:
+
+mnt.txt → Macro Name Table (MNT)
+
+mdt.txt → Macro Definition Table (MDT)
+
+adt.txt → Argument Definition Table (ADT)
+
+PrintWriter → Writes formatted text to files easily.
+
+Begin Reading Input File
+while ((input = br.readLine()) != null) {
+    StringTokenizer st = new StringTokenizer(input, " ");
+    tt = st.nextToken();
+
+
+Reads line-by-line until end of file.
+
+StringTokenizer splits the line into tokens separated by spaces.
+
+tt gets the first token (like MACRO, MEND, LDA, etc.)
+
+Check for MACRO Start
+if (tt.equals("MACRO")) {
+    macro_enc = 1;
+    tt = st.nextToken();
+    mnt[mcount] = tt;
+    macroindex[mcount] = index;
+
+
+If the token is "MACRO", we’ve found the start of a macro definition.
+
+Set macro_enc = 1 to enter macro processing mode.
+
+The next token (tt) is the macro name.
+
+Store the macro name in mnt[mcount].
+
+Save the current line index in macroindex[mcount] to mark where its body starts.
+
+Write Macro Info into MNT, MDT, ADT
+p3.println(mnt[mcount] + "\t" + macroindex[mcount]);
+p4.println(mnt[mcount]);
+p5.println(mnt[mcount]);
+mcount++;
+
+
+Adds a new entry to:
+
+MNT: Macro name and its starting index.
+
+MDT and ADT: Start new sections for the macro.
+
+Increments mcount (macro counter).
+
+Process Macro Arguments
+if (st.hasMoreTokens()) {
+    tt = st.nextToken();
+    StringTokenizer t = new StringTokenizer(tt, ",");
+
+    while (t.hasMoreTokens()) {
+        arg = t.nextToken();
+        if (arg.charAt(0) == '&') {
+            AR[arg_count] = arg;
+            p5.println(AR[arg_count]);
+            arg_count++;
+        }
+    }
+}
+
+
+Checks if the macro name line includes parameters (e.g. ADDNUM &A, &B).
+
+Splits parameters by , and stores them in AR[].
+
+Writes them to ADT (Argument Definition Table).
+
+Increments arg_count for each parameter.
+
+Handling Lines Inside the Macro
+} else {
+    if (macro_enc == 1) {
+        if (input.equals("MEND")) {
+            macro_enc = 0;
+            p4.println("MEND");
+            arg_count = 0; // Reset for next macro
+
+
+If not “MACRO” line, check if currently inside a macro definition.
+
+If the line is "MEND" → the macro ends.
+
+Set macro_enc = 0 to exit macro mode.
+
+Write "MEND" to MDT.
+
+Reset arg_count for next macro.
+
+Process Macro Body Instructions
+} else {
+    StringTokenizer t = new StringTokenizer(input, " ");
+    while (t.hasMoreTokens()) {
+        macroTokens = t.nextToken();
+        boolean replaced = false;
+
+        for (int i = 0; i < arg_count; i++) {
+            if (macroTokens.equals(AR[i])) {
+                p4.print("AR" + i + " ");
+                replaced = true;
+                break;
+            }
+        }
+
+        if (!replaced) {
+            p4.print(macroTokens + " ");
+        }
+
+        if (!t.hasMoreTokens()) {
+            p4.println();
+        }
+    }
+}
+
+
+Here’s what happens line-by-line:
+
+Tokenize each word in the macro body.
+
+For each token:
+
+Check if it matches one of the arguments stored in AR[].
+
+If yes → replace it with its position, e.g., AR0, AR1, etc.
+
+Else → print the token as it is.
+
+This creates the MDT entries where arguments are replaced with placeholders.
+
+🧩 Example:
+
+Input macro body:
+
+LDA &ARG1
+ADD &ARG2
+STA RESULT
+
+
+MDT output:
+
+LDA AR0
+ADD AR1
+STA RESULT
+MEND
+
+Increment Line Index
+index++;
+
+
+Increments line count — used for keeping track of MDT line numbers.
+
+Close Files
+p3.close();
+p4.close();
+p5.close();
+
+
+Closes the three output files properly.
+
+Exception Handling
+} catch (Exception e) {
+    e.printStackTrace();
+}
+
+
+Catches and prints any runtime errors (like missing files).
+
+🧮 Example Execution
+Input.txt
+MACRO
+ADDNUM &A, &B
+LDA &A
+ADD &B
+STA RESULT
+MEND
+
+Output Files
+✅ mnt.txt (Macro Name Table)
+ADDNUM   1
+
+✅ adt.txt (Argument Definition Table)
+ADDNUM
+&A
+&B
+
+✅ mdt.txt (Macro Definition Table)
+ADDNUM
+LDA AR0
+ADD AR1
+STA RESULT
+MEND
+
+📘 Concept Recap
+Table	Purpose
+MNT (Macro Name Table)	Stores macro name + pointer to MDT entry
+MDT (Macro Definition Table)	Stores macro body (with arguments replaced by AR#)
+ADT (Argument Definition Table)	Stores argument names for substitution
+🧠 Algorithm Summary
+
+Read each line from input file.
+
+When “MACRO” appears:
+
+Record macro name → MNT.
+
+Record parameters → ADT.
+
+For lines inside the macro:
+
+Replace arguments (&A, &B) with symbolic names (AR0, AR1).
+
+Store in MDT.
+
+When “MEND” appears → finish macro definition.
+
+Output all tables.

@@ -1,0 +1,316 @@
+🧩 1. Import statement
+import java.util.*;
+
+
+Imports Java’s utility package — gives access to classes like:
+
+Scanner → for user input.
+
+Queue, LinkedList, Arrays, Comparator → for data structures and sorting.
+
+⚙️ 2. Process class
+class Process {
+    int id, arrivalTime, burstTime, remainingTime, completionTime, waitingTime, turnaroundTime;
+
+    Process(int id, int arrivalTime, int burstTime) {
+        this.id = id;
+        this.arrivalTime = arrivalTime;
+        this.burstTime = burstTime;
+        this.remainingTime = burstTime;
+    }
+}
+
+Breakdown:
+
+Defines a Process blueprint with:
+
+id → Process ID (like P1, P2, etc.)
+
+arrivalTime → Time at which the process arrives in the ready queue.
+
+burstTime → Total CPU time required by the process.
+
+remainingTime → Keeps track of how much burst time is left.
+
+completionTime → When the process finishes execution.
+
+waitingTime → Total time spent waiting in the queue.
+
+turnaroundTime → Total time from arrival to completion (CT - AT).
+
+Constructor initializes id, arrivalTime, and burstTime, and also sets remainingTime = burstTime.
+
+🧠 Essentially, this class holds all information for each process and is used to track its progress.
+
+🧠 3. Main Class Definition
+public class RoundRobin {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+
+The main method — execution starts here.
+
+Scanner sc is created to take input from the user.
+
+🏁 4. Input: Number of Processes & Time Quantum
+        System.out.print("Enter number of processes: ");
+        int n = sc.nextInt();
+
+        System.out.print("Enter time quantum: ");
+        int tq = sc.nextInt();
+
+
+User specifies:
+
+n = how many processes to schedule.
+
+tq = time quantum, i.e., how long each process can execute before being preempted (e.g., 2ms, 3ms).
+
+⏱️ Example:
+
+Enter number of processes: 3
+Enter time quantum: 2
+
+🧮 5. Input: Process Details
+        Process[] processes = new Process[n];
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter arrival time of P" + (i + 1) + ": ");
+            int at = sc.nextInt();
+            System.out.print("Enter burst time of P" + (i + 1) + ": ");
+            int bt = sc.nextInt();
+            processes[i] = new Process(i + 1, at, bt);
+        }
+
+
+Creates an array processes[] to hold all process objects.
+
+For each process:
+
+Takes arrival time and burst time as input.
+
+Instantiates a Process object with ID i+1.
+
+Stores it in the array.
+
+🧠 Example Input:
+
+Enter arrival time of P1: 0
+Enter burst time of P1: 5
+Enter arrival time of P2: 1
+Enter burst time of P2: 3
+Enter arrival time of P3: 2
+Enter burst time of P3: 1
+
+📋 6. Initialize Ready Queue & Time
+        Queue<Process> queue = new LinkedList<>();
+        int time = 0;
+        boolean[] visited = new boolean[n];
+
+
+queue → Represents the Ready Queue (FIFO order) using a LinkedList.
+
+time → Keeps track of the current CPU time.
+
+visited[] → Keeps track of which processes have already been added to the queue (to avoid adding them multiple times).
+
+⏳ 7. Sort Processes by Arrival Time
+        Arrays.sort(processes, Comparator.comparingInt(p -> p.arrivalTime));
+
+
+Sorts all processes in ascending order of arrival time, so we always start with the earliest one.
+
+🧠 Example (sorted by arrival time):
+
+Process	Arrival	Burst
+P1	0	5
+P2	1	3
+P3	2	1
+▶️ 8. Add First Process to Queue
+        queue.add(processes[0]);
+        visited[0] = true;
+        time = processes[0].arrivalTime;
+
+
+Adds the first arriving process into the ready queue.
+
+Marks it as visited.
+
+Sets time to its arrival time (e.g., starts from 0).
+
+🔁 9. Main Round Robin Loop
+        while (!queue.isEmpty()) {
+            Process current = queue.poll();
+
+
+The loop continues as long as the ready queue has processes.
+
+Removes (poll()) the first process from the queue to execute it.
+
+⚙️ 10. Process Execution (CPU Burst)
+            if (current.remainingTime > tq) {
+                time += tq;
+                current.remainingTime -= tq;
+            } else {
+                time += current.remainingTime;
+                current.remainingTime = 0;
+                current.completionTime = time;
+                current.turnaroundTime = current.completionTime - current.arrivalTime;
+                current.waitingTime = current.turnaroundTime - current.burstTime;
+            }
+
+Logic:
+
+If process needs more CPU time than the time quantum:
+
+Run it for tq units of time.
+
+Subtract tq from its remaining time.
+
+Process not yet finished — will rejoin queue later.
+
+If process can finish within the current quantum:
+
+Run it for remainingTime.
+
+Update:
+
+completionTime = current CPU time.
+
+turnaroundTime = CT - AT.
+
+waitingTime = TAT - BT.
+
+🧠 Example:
+
+If tq = 2 and remainingTime = 5 → process runs for 2ms, 3ms left.
+If remainingTime = 1 → process finishes and is not re-added.
+
+⏰ 11. Add Newly Arrived Processes
+            for (int i = 0; i < n; i++) {
+                if (!visited[i] && processes[i].arrivalTime <= time) {
+                    queue.add(processes[i]);
+                    visited[i] = true;
+                }
+            }
+
+
+After each time slice:
+
+Check all processes.
+
+If a process has arrived (arrivalTime <= current time) and not yet in the queue, add it.
+
+This simulates processes arriving over time.
+
+🔁 12. Re-Add Current Process (if not finished)
+            if (current.remainingTime > 0) {
+                queue.add(current);
+            }
+        }
+
+
+If the current process is not completed, it goes back into the queue.
+
+If completed, it is skipped (not added again).
+
+🧠 This is the “round robin” behavior — each process gets its fair turn repeatedly.
+
+📊 13. Print Results
+        System.out.println("\nProcess\tAT\tBT\tCT\tTAT\tWT");
+        for (Process p : processes) {
+            System.out.println("P" + p.id + "\t" + p.arrivalTime + "\t" + p.burstTime + "\t" +
+                               p.completionTime + "\t" + p.turnaroundTime + "\t" + p.waitingTime);
+        }
+
+
+Prints a formatted table:
+
+AT: Arrival Time
+
+BT: Burst Time
+
+CT: Completion Time
+
+TAT: Turnaround Time
+
+WT: Waiting Time
+
+🧾 Example Output:
+
+Process AT  BT  CT  TAT WT
+P1      0   5   9   9   4
+P2      1   3   8   7   4
+P3      2   1   3   1   0
+
+🧮 14. Calculate and Print Averages
+        double avgTAT = Arrays.stream(processes).mapToDouble(p -> p.turnaroundTime).average().orElse(0);
+        double avgWT = Arrays.stream(processes).mapToDouble(p -> p.waitingTime).average().orElse(0);
+
+        System.out.println("\nAverage Turnaround Time: " + avgTAT);
+        System.out.println("Average Waiting Time: " + avgWT);
+
+
+Uses Java Streams to calculate:
+
+Average Turnaround Time
+
+Average Waiting Time
+
+🧠 Example:
+
+Average Turnaround Time = 5.67
+Average Waiting Time = 2.67
+
+🔚 15. Close the Scanner
+        sc.close();
+    }
+}
+
+
+Closes the Scanner object to prevent memory leaks.
+
+📈 Example Run (Full Simulation)
+
+Input:
+
+Enter number of processes: 3
+Enter time quantum: 2
+Enter arrival time of P1: 0
+Enter burst time of P1: 5
+Enter arrival time of P2: 1
+Enter burst time of P2: 3
+Enter arrival time of P3: 2
+Enter burst time of P3: 1
+
+
+Execution Order:
+
+Time 0–2  : P1 (remaining 3)
+Time 2–4  : P2 (remaining 1)
+Time 4–5  : P3 (finished)
+Time 5–7  : P1 (remaining 1)
+Time 7–8  : P2 (finished)
+Time 8–9  : P1 (finished)
+
+
+Output Table:
+
+Process	AT	BT	CT	TAT	WT
+P1	0	5	9	9	4
+P2	1	3	8	7	4
+P3	2	1	3	1	0
+
+Averages:
+
+Average Turnaround Time = 5.67
+Average Waiting Time = 2.67
+
+⚙️ Summary of Concepts
+Term	Meaning
+Round Robin	CPU scheduling where each process gets equal fixed time (time quantum).
+Time Quantum	Smallest CPU time slice assigned to each process in one round.
+Preemption	If a process’s quantum expires, it’s paused and placed back in queue.
+Fair Scheduling	All processes get CPU fairly — no starvation.
+Turnaround Time (TAT)	Completion time − Arrival time
+Waiting Time (WT)	Turnaround time − Burst time

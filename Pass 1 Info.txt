@@ -1,0 +1,304 @@
+🟦 1. Import Packages
+import java.util.*;
+import java.io.*;
+
+
+java.util.* → for StringTokenizer, ArrayList, etc.
+
+java.io.* → for file input/output classes (BufferedReader, FileReader, PrintWriter).
+
+🟩 2. Class and Static Variables
+public class pass1 {
+    static int address = 0;
+    static int sadd[] = new int[10];
+    static int ladd[] = new int[10];
+
+
+address → stores the current location counter (LC), i.e., the current memory address.
+
+sadd[] → stores the addresses of symbols.
+
+ladd[] → stores the addresses of literals.
+
+🟦 3. main() method begins
+public static void main(String args[]) {
+    BufferedReader br;
+    String input = null;
+
+
+Declares br for reading from a file (initial.txt).
+
+input will store each line of code read from the file.
+
+🟩 4. Define Opcode Tables
+String IS[] = {"ADD", "SUB", "MUL", "MOV"};
+String UserReg[] = {"AREG", "BREG", "CREG", "DREG"};
+String AD[] = {"START", "END"};
+String DL[] = {"DC", "DS"};
+
+
+These are arrays that simulate opcode tables used by an assembler:
+
+IS → Imperative Statements (machine instructions).
+
+UserReg → Registers available.
+
+AD → Assembler Directives (non-machine instructions, e.g., START, END).
+
+DL → Declarative Statements (for defining storage).
+
+🟧 5. Initialize Variables
+int lc = 0, scount = 0, lcount = 0;
+int flag = 0;
+String tt = null;
+String sv[] = new String[10];
+String lv[] = new String[10];
+
+
+lc → local variable for location counter.
+
+scount → counts symbols.
+
+lcount → counts literals.
+
+flag → used to check symbol conditions.
+
+sv[] → stores symbol names.
+
+lv[] → stores literal names.
+
+🟦 6. File Handling Setup
+br = new BufferedReader(new FileReader("initial.txt"));
+File f = new File("IM.txt");
+File f1 = new File("ST.txt");
+File f2 = new File("LT.txt");
+
+PrintWriter p = new PrintWriter(f);
+PrintWriter p1 = new PrintWriter(f1);
+PrintWriter p2 = new PrintWriter(f2);
+
+
+Reads assembly input from initial.txt.
+
+Creates three output files:
+
+IM.txt → Intermediate code.
+
+ST.txt → Symbol Table.
+
+LT.txt → Literal Table.
+
+PrintWriter is used to write to these files.
+
+🟩 7. Start Reading File Line by Line
+int k = 0;
+
+while ((input = br.readLine()) != null) {
+    StringTokenizer st = new StringTokenizer(input, " ");
+
+
+Reads each line from the source file.
+
+StringTokenizer splits each line into tokens (separated by spaces).
+
+🟦 8. Token Processing
+while (st.hasMoreTokens()) {
+    tt = st.nextToken();
+
+
+Reads tokens (words) one by one from the line.
+
+Each tt can be a mnemonic, directive, register, symbol, or literal.
+
+🟧 9. Detect START address
+if (tt.matches("\\d*") && tt.length() > 2) {
+    lc = Integer.parseInt(tt);
+    p.println(lc);
+    address = lc - 1;
+}
+
+
+If a token is purely numeric (like 100), it’s treated as the starting address.
+
+lc (and address) are set to this starting address.
+
+Writes the starting address to IM.txt.
+
+🟩 10. Assembler Directives (AD)
+for (int i = 0; i < AD.length; i++) {
+    if (tt.equals(AD[i])) {
+        p.print("AD " + (i + 1) + " ");
+    }
+}
+
+
+Checks if the token is an assembler directive (like START, END).
+
+Writes its type code (AD 1, AD 2, etc.) to IM.txt.
+
+🟧 11. Imperative Statements (IS)
+for (int i = 0; i < IS.length; i++) {
+    if (tt.equals(IS[i])) {
+        p.print("IS " + (i + 1) + " ");
+    }
+}
+
+
+Checks if the token matches an instruction like ADD, MOV, etc.
+
+Writes its code (e.g., IS 1) to the intermediate file.
+
+🟦 12. Registers
+for (int i = 0; i < UserReg.length; i++) {
+    if (tt.equals(UserReg[i])) {
+        p.print((i + 1) + " ");
+        flag = 1;
+    }
+}
+
+
+Checks if the token is a register (AREG, BREG...).
+
+Writes its code (like 1, 2) in IM.txt.
+
+Sets flag = 1 to indicate a register was found before a symbol.
+
+🟩 13. Declarative Statements (DL)
+for (int i = 0; i < DL.length; i++) {
+    if (tt.equals(DL[i])) {
+        p.print("DL " + (i + 1) + " ");
+    }
+}
+
+
+Checks if the token is a Declarative Statement (like DC, DS).
+
+Writes it as DL 1 or DL 2 in the intermediate file.
+
+🟧 14. Symbol Handling
+if (tt.length() == 1 && !(st.hasMoreTokens()) && flag == 1) {
+    boolean exists = false;
+    for (int i = 0; i < scount; i++) {
+        if (sv[i] != null && sv[i].equals(tt)) {
+            p.print("S" + i);
+            exists = true;
+            break;
+        }
+    }
+    if (!exists) {
+        p.print("S" + scount);
+        sv[scount] = tt;
+        scount++;
+    }
+}
+
+
+If the token is a single character (like X) and it appears after a register:
+
+It’s treated as a symbol (variable or label).
+
+Checks if it already exists in the symbol table.
+
+If not, adds it to sv[] and writes S0, S1, etc. in intermediate code.
+
+🟦 15. Label Handling
+if (tt.length() == 1 && (st.hasMoreTokens())) {
+    p.print(tt + " ");
+    sadd[k] = address;
+    k++;
+}
+
+
+If it’s a single character and not the last token, it’s treated as a label.
+
+Saves its address (sadd[k] = address).
+
+🟩 16. Literal Handling
+if (tt.charAt(0) == '=') {
+    p.print("L" + lcount);
+    lv[lcount] = tt;
+    lcount++;
+}
+
+
+If token starts with '=', it’s a literal (e.g., =5).
+
+Adds it to literal table (lv[]) and writes L0, L1, etc. in IM.txt.
+
+🟧 17. DS (Define Storage)
+if (tt.equals("DS")) {
+    if (st.hasMoreTokens()) {
+        int a = Integer.parseInt(st.nextToken());
+        address = address + a - 1;
+    }
+    p.println();
+}
+
+
+When a Define Storage directive (DS) appears:
+
+Reads the next number (e.g., DS 3 means reserve 3 memory locations).
+
+Increases the address counter accordingly.
+
+🟦 18. End of Line
+if (!st.hasMoreTokens()) {
+    p.println();
+}
+
+
+Ends the line in the intermediate file.
+
+🟩 19. Increment Address Counter
+address++;
+
+
+Moves the location counter to the next memory address.
+
+🟧 20. Literal Table Address Assignment
+for (int i = 0; i < lcount; i++) {
+    ladd[i] = address;
+    address++;
+}
+
+
+After processing all lines, literals are assigned memory addresses at the end of the program.
+
+🟩 21. Write Symbol Table
+for (int i = 0; i < scount; i++) {
+    p1.println(i + "\t" + sv[i] + "\t" + sadd[i]);
+}
+p1.close();
+
+
+Writes all symbols and their addresses into ST.txt.
+
+🟦 22. Write Literal Table
+for (int i = 0; i < lcount; i++) {
+    p2.println(i + "\t" + lv[i] + "\t" + ladd[i]);
+}
+p2.close();
+
+
+Writes all literals and their assigned addresses into LT.txt.
+
+🟩 23. Completion Messages
+System.out.println("Pass 1 completed successfully!");
+System.out.println("Generated: IM.txt, ST.txt, LT.txt");
+
+
+Confirms successful completion and lists the generated files.
+
+🟥 24. Exception Handling
+} catch (Exception e) {
+    e.printStackTrace();
+}
+
+
+Catches any file or input/output errors and prints a detailed error message.
+
+✅ Summary
+Output File	Purpose
+IM.txt	Intermediate code (machine-like code with symbols/literals marked).
+ST.txt	Symbol Table: symbol → address mapping.
+LT.txt	Literal Table: literal → address mapping.

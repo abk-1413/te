@@ -1,0 +1,206 @@
+🟦 1. Import Statement
+import java.util.*;
+
+
+Imports all classes from the java.util package.
+
+Needed for Scanner, List, and ArrayList.
+
+🟩 2. Class and Main Method
+public class Optimal_PageReplacement {
+    public static void main(String[] args) {
+
+
+Defines a public class named Optimal_PageReplacement.
+
+The main() method is the program’s entry point.
+
+🟨 3. Create Scanner for Input
+Scanner sc = new Scanner(System.in);
+
+
+Creates a Scanner object sc to take user input from the console.
+
+🟧 4. Input: Number of Frames
+System.out.print("Enter number of frames: ");
+int frames = sc.nextInt();
+
+
+Asks how many frames (memory slots) are available in physical memory.
+
+Stores that number in the variable frames.
+
+🟦 5. Input: Number of Pages
+System.out.print("Enter number of pages: ");
+int n = sc.nextInt();
+
+
+Asks for the length of the reference string (number of page requests).
+
+Stores it in n.
+
+🟩 6. Input: Page Reference String
+int[] pages = new int[n];
+System.out.println("Enter the page reference string:");
+for (int i = 0; i < n; i++) {
+    pages[i] = sc.nextInt();
+}
+
+
+Creates an integer array pages[] of size n.
+
+User enters the sequence of pages (e.g., 7 0 1 2 0 3 0 4).
+
+These represent the order in which pages are requested by the CPU.
+
+🟨 7. Initialization
+List<Integer> memory = new ArrayList<>();
+int pageFaults = 0;
+int pageHits = 0;
+
+
+memory → dynamic list that simulates the current pages stored in memory frames.
+
+pageFaults → counts how many page faults occur.
+
+pageHits → counts how many page hits occur.
+
+🟧 8. Display Header
+System.out.println("\nPage Replacement Process (OPTIMAL):");
+
+
+Prints a heading before showing the step-by-step replacement process.
+
+🟦 9. Loop Through Each Page Request
+for (int i = 0; i < n; i++) {
+    int currentPage = pages[i];
+
+
+Iterates through every page request.
+
+Stores the current page being requested in currentPage.
+
+🟩 10. Check for Page Hit
+if (memory.contains(currentPage)) {
+    pageHits++;
+    System.out.println("Step " + (i + 1) + " -> " + memory + " | Page " + currentPage + " => HIT");
+    continue;
+}
+
+
+Checks if the currentPage is already present in memory.
+
+If yes → it’s a Page Hit:
+
+Increment pageHits.
+
+Display the step as a "HIT".
+
+Use continue to skip to the next page (no replacement needed).
+
+🟨 11. Handle Page Fault
+pageFaults++;
+
+
+If the page is not in memory, a Page Fault occurs.
+
+Increment the pageFaults counter.
+
+🟩 12. If There’s Still Free Space
+if (memory.size() < frames) {
+    memory.add(currentPage);
+}
+
+
+If memory is not full, simply add the new page directly.
+
+🟧 13. Else — Apply Optimal Page Replacement
+
+If memory is full, we must choose a page to replace using the optimal strategy.
+
+else {
+    int farthestIndex = -1;
+    int pageToReplace = -1;
+
+
+farthestIndex → stores the index in the future where a page will be used farthest ahead.
+
+pageToReplace → stores which page will be replaced.
+
+🟦 14. Find the Optimal Page to Replace
+for (int page : memory) {
+    int nextUse = Integer.MAX_VALUE;
+
+    // Look ahead to see when this page will be used next
+    for (int j = i + 1; j < n; j++) {
+        if (pages[j] == page) {
+            nextUse = j;
+            break;
+        }
+    }
+
+
+For each page currently in memory:
+
+Look ahead in the reference string (from i+1 to n) to find when it will next appear.
+
+If it is found → store its future index as nextUse.
+
+If not found again → nextUse remains Integer.MAX_VALUE (meaning never used again).
+
+🟩 15. Choose Replacement Candidate
+    if (nextUse == Integer.MAX_VALUE) {
+        pageToReplace = page;
+        break;
+    }
+
+    if (nextUse > farthestIndex) {
+        farthestIndex = nextUse;
+        pageToReplace = page;
+    }
+}
+
+
+If a page is never used again, replace it immediately.
+
+Otherwise, pick the page whose next use is farthest in the future — this minimizes future page faults.
+
+🟧 16. Perform the Replacement
+memory.remove(Integer.valueOf(pageToReplace));
+memory.add(currentPage);
+
+
+Removes the chosen page from memory.
+
+Adds the current page into memory.
+
+🟦 17. Display Step Result
+System.out.println("Step " + (i + 1) + " -> " + memory + " | Page " + currentPage + " => FAULT");
+
+
+Displays the memory contents after this page fault.
+
+Marks the step as a FAULT.
+
+🟩 18. Final Results
+System.out.println("\nTotal Page Hits   = " + pageHits);
+System.out.println("Total Page Faults = " + pageFaults);
+
+
+Displays total hits and faults after all pages have been processed.
+
+🟧 19. Close Scanner
+sc.close();
+
+
+Closes the Scanner to prevent resource leaks.
+
+✅ Summary of Algorithm
+
+Optimal Page Replacement Algorithm Logic:
+
+Keeps pages that will be used soonest.
+
+Replaces the page that will not be used for the longest time in the future.
+
+Requires knowledge of future page requests (so it's theoretical/ideal in real OS).
