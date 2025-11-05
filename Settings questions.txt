@@ -1,0 +1,130 @@
+1. Input and Output of Pass I and Pass II of Assembler and Macro
+
+Pass I:
+Input – Source program
+Output – Symbol table, intermediate code
+
+Pass II:
+Input – Intermediate code, symbol table
+Output – Object code
+
+Macro:
+Expands macro definitions during assembly.
+
+2. What is Preemptive and Non-Preemptive Scheduling?
+
+Preemptive: CPU can be taken from a process before it finishes (e.g. Round Robin).
+
+Non-Preemptive: Process keeps CPU until it finishes (e.g. FCFS).
+
+3. What is Turnaround Time, Response Time, Waiting Time?
+
+Turnaround Time: Completion time – Arrival time
+
+Response Time: First response – Arrival time
+
+Waiting Time: Turnaround time – Burst time
+
+4. Which algorithm is best when FCFS, RR, Priority and SJF are compared?
+
+SJF (Shortest Job First) gives minimum average waiting and turnaround time.
+
+5. Which algorithm is best when LRU, Optimal and FIFO are compared?
+
+Optimal is best (least page faults),
+
+LRU is better than FIFO in practice.
+
+6. What is Macro and Assembler?
+
+Macro: A single instruction that expands into a set of instructions.
+
+Assembler: Converts assembly language into machine code.
+
+7. Why Banker's Algorithm is required?
+
+To avoid deadlock by checking safe resource allocation before granting resources.
+
+8. What is Deadlock? Four Necessary Conditions?
+
+Deadlock – When processes wait forever for resources.
+Conditions:
+
+Mutual Exclusion
+
+Hold and Wait
+
+No Preemption
+
+Circular Wait
+
+9. Example of FCFS, RR, SJF, Priority Scheduling
+
+(Explain briefly in viva using small example)
+
+FCFS: First come first served.
+
+SJF: Process with smallest burst time first.
+
+RR: Each process gets fixed time slice.
+
+Priority: Process with highest priority first.
+
+10. Example of FIFO, Optimal, LRU Page Replacement
+
+FIFO: Oldest page replaced first.
+
+Optimal: Page not needed for longest time replaced.
+
+LRU: Least recently used page replaced.
+
+11. Difference between Pass I and Pass II of Assembler
+Pass I	Pass II
+Creates symbol table	Uses symbol table
+Generates intermediate code	Generates final object code
+12. Drawback of Pass I of Assembler
+
+It cannot generate object code directly.
+
+Requires second pass for address resolution.
+
+13. Difference between Compiler and Interpreter
+Compiler	Interpreter
+Translates whole program at once	Translates line by line
+Faster execution	Slower execution
+14. In which parts Assembly Language is divided?
+
+Machine-dependent part
+
+Machine-independent part
+
+15. What is Process? States of Process
+
+Process – Program in execution.
+States: New, Ready, Running, Waiting, Terminated.
+
+16. What is Paging?
+
+Memory management technique dividing memory into fixed-size blocks (pages & frames).
+
+17. What is Segmentation?
+
+Memory divided into variable-sized segments based on logical divisions like code, data, stack.
+
+18. What is Pages and Frames?
+
+Page: Part of process in logical memory.
+
+Frame: Part of physical memory.
+
+19. Why need of CPU Scheduling Algorithm?
+
+To use CPU efficiently, reduce waiting time, and improve system performance.
+
+20. Types of Scheduling + Explain Long, Medium, Short Term
+
+Long Term Scheduler: Selects which process to admit (job scheduling).
+
+Medium Term: Swaps processes between main memory and disk.
+
+Short Term: Chooses which process runs next on CPU.
