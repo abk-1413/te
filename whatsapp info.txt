@@ -1,0 +1,72 @@
+1) Whatsapp-
+
+
+🧩 Step 1: App Chosen
+
+App: WhatsApp
+Purpose: Messaging and media sharing app
+
+🖼️ Step 2: Paper / Figma Prototype Screens
+
+Design at least 5 screens (draw them on paper or make them in Figma):
+
+Login / Signup Screen
+
+Fields: Phone number, OTP
+
+Button: “Next”
+
+Home / Chat List Screen
+
+Shows list of chats
+
+Icons: Camera, Search, Menu (⋮)
+
+Chat Screen
+
+Message area, Input box, Send button, Emoji icon
+
+Status Screen
+
+User’s own status + contacts’ statuses
+
+Calls Screen
+
+List of recent voice/video calls
+
+Call button
+
+
+📋 Step 3: Observation Table — Interaction Styles, Input & Output
+
+| **Screen**  | **Interaction Style**               | **Input Type**                  | **Output Type**               |
+| ----------- | ----------------------------------- | ------------------------------- | ----------------------------- |
+| Login       | Form-based, Direct Manipulation     | Text (phone number, OTP)        | Success message / Next screen |
+| Chat List   | Menu selection, Direct manipulation | Tap / scroll                    | List of chats displayed       |
+| Chat Screen | Direct manipulation                 | Text, Voice, Emoji, Tap on send | Sent/received messages shown  |
+| Status      | Menu selection                      | Tap, Swipe                      | Photos/videos displayed       |
+| Calls       | Menu selection                      | Tap on call icon                | Call interface opens          |
+
+
+📊 Step 4: Principles Achieved Table
+
+| **Sr. No** | **Principle Achieved** | **Justification**                                  |
+| ---------- | ---------------------- | -------------------------------------------------- |
+| 1          | Consistency            | All screens use same color scheme and icons        |
+| 2          | Feedback               | Sent messages show ticks; calls show status        |
+| 3          | Visibility             | Important buttons (Send, Call) are clearly visible |
+| 4          | User control           | Users can go back or delete messages easily        |
+| 5          | Simplicity             | Interface is clean with minimal distractions       |
+
+
+🧠 Step 5: Element Observation Table
+
+| **Sr. No** | **Element**    | **Observation**         | **Improvement / Correction**   |
+| ---------- | -------------- | ----------------------- | ------------------------------ |
+| 1          | Chat input box | Easy to access and use  | Could add voice input shortcut |
+| 2          | Status screen  | Attractive layout       | Add “mute status” option       |
+| 3          | Calls screen   | Clear call logs         | Add filter for missed calls    |
+| 4          | Menu icons     | Simple and recognizable | Increase icon spacing          |
+| 5          | Navigation     | Smooth between screens  | Add bottom navigation bar      |
+
+

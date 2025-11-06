@@ -1,0 +1,24 @@
+3) Ecommerce website -
+
+
+✅ Principles Achieved Table
+
+| Sr. No | Principle Achieved   | Justification                                           |
+| ------ | -------------------- | ------------------------------------------------------- |
+| 1      | **Consistency**      | Layout and buttons follow same style across pages       |
+| 2      | **Simplicity**       | Clean and easy product navigation                       |
+| 3      | **Feedback**         | Buttons respond visually when clicked (highlight/hover) |
+| 4      | **User Control**     | User can edit cart at any time before checkout          |
+| 5      | **Error Prevention** | Checkout validates required fields                      |
+
+
+🔍 Observation Table
+
+| Sr. No | Element                | Observation               | Improvements / Corrections              |
+| ------ | ---------------------- | ------------------------- | --------------------------------------- |
+| 1      | Search Bar             | Easily visible but simple | Add voice search and filter suggestions |
+| 2      | Add to Cart Button     | Clearly placed            | Increase size for mobile view           |
+| 3      | Product Images         | Informative               | Add zoom feature on images              |
+| 4      | Cart Quantity Selector | Functional                | Add swipe to remove option              |
+| 5      | Checkout Form          | No confusion in fields    | Auto-fill recommended                   |
+

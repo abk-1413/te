@@ -1,0 +1,71 @@
+2) INSTAGRAM APP-
+
+
+Prototype Screens (Instagram Example)
+
+You will design 5 screens (draw them on paper or recreate them in Figma/Canva):
+
+1.Login / Signup Screen
+
+Fields: Username, Password
+
+Buttons: “Login”, “Sign Up”, “Forgot Password”
+
+2.Home Feed Screen
+
+Posts from other users
+
+Like, Comment, Share, Save buttons
+
+3.Search / Explore Screen
+
+Search bar on top
+
+Grid of photos and videos
+
+4.Reels Screen
+
+Full-screen vertical videos with Like, Comment, Share icons
+
+5.Profile Screen
+
+User profile picture, bio, number of posts, followers, following
+
+Edit Profile button
+
+Grid of user’s posts
+
+
+🧩 Observation Table (Interaction Styles, Input & Output)
+
+| **Screen**       | **Interaction Style** | **Input Type**                           | **Output Type**                   |
+| ---------------- | --------------------- | ---------------------------------------- | --------------------------------- |
+| Login Screen     | Form-based            | Text (username, password), Tap on button | Successful login or error message |
+| Home Feed        | Direct manipulation   | Tap, Swipe                               | Posts, likes, comments displayed  |
+| Search / Explore | Menu selection        | Tap, Text input                          | Search results / Media grid       |
+| Reels            | Direct manipulation   | Swipe, Tap                               | Video plays with sound            |
+| Profile          | Menu selection        | Tap on posts, Edit button                | Profile details displayed         |
+
+
+🧠 Principles Achieved Table
+
+| **Sr. No.** | **Principle Achieved** | **Justification**                                 |
+| ----------- | ---------------------- | ------------------------------------------------- |
+| 1           | Consistency            | All screens have similar colors, fonts, and icons |
+| 2           | Visibility             | Buttons and icons are clearly visible             |
+| 3           | Feedback               | Likes and follows show instant response           |
+| 4           | User Control           | User can go back, unfollow, or delete post        |
+| 5           | Simplicity             | Clean layout with minimal clutter                 |
+
+
+🔍 Element Observation Table
+
+| **Sr. No.** | **Element**    | **Observation**    | **Improvement / Correction**       |
+| ----------- | -------------- | ------------------ | ---------------------------------- |
+| 1           | Login button   | Easy to use        | Add “Show password” option         |
+| 2           | Search bar     | Clearly visible    | Add voice search                   |
+| 3           | Like button    | Immediate feedback | Change color on like for clarity   |
+| 4           | Reels screen   | Engaging interface | Add pause/play button              |
+| 5           | Profile screen | Well organized     | Add highlights section for stories |
+
+

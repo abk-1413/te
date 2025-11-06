@@ -1,0 +1,27 @@
+4) Amazon Website-
+
+4. Principles Achieved and Justification
+
+| Sr. No | Principle            | Achieved | Justification                                                                   |
+| ------ | -------------------- | -------- | ------------------------------------------------------------------------------- |
+| 1      | **Consistency**      | ✅        | Layout, fonts, and buttons are consistent across all screens.                   |
+| 2      | **Feedback**         | ✅        | System gives visual confirmation when actions like “Add to Cart” are performed. |
+| 3      | **Visibility**       | ✅        | Key features (search, cart, and buy buttons) are clearly visible.               |
+| 4      | **Affordance**       | ✅        | Buttons and icons indicate their function intuitively.                          |
+| 5      | **Error Prevention** | ✅        | Form validation ensures correct information during checkout.                    |
+| 6      | **User Control**     | ✅        | Users can edit or remove cart items anytime.                                    |
+| 7      | **Learnability**     | ✅        | Simple design; new users can easily understand navigation.                      |
+
+
+5. Observation Table
+
+| Sr. No | Element                  | Observation                              | Improvement / Corrections                      |
+| ------ | ------------------------ | ---------------------------------------- | ---------------------------------------------- |
+| 1      | **Search Bar**           | Clearly visible and functional           | Add voice search or predictive suggestions     |
+| 2      | **Navigation Menu**      | Easy to use and consistent               | Add dropdown animation for smoother navigation |
+| 3      | **Product Image & Info** | High-quality images; clean layout        | Add image zoom and 360° view option            |
+| 4      | **Add to Cart Button**   | Clearly labeled; quick action            | Increase button size for mobile users          |
+| 5      | **Cart Summary**         | Displays all selected items neatly       | Add delivery time estimate                     |
+| 6      | **Checkout Form**        | Organized and simple                     | Add auto-fill for saved addresses              |
+| 7      | **Order Confirmation**   | Displays total price and success message | Include order tracking link                    |
+
