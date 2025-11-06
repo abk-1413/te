@@ -1,0 +1,91 @@
+🧠 GOAL:
+Select an item and add it to cart.
+🧩 METHOD 1: Using Mouse (Graphical Interaction)
+Steps:
+1.	M (Mental preparation) = 1.35 sec
+o	User decides which item to select.
+2.	P (Point to item using mouse) = 1.10 sec
+3.	K (Click on the item) = 0.28 sec
+4.	P (Point to “Add to Cart” button) = 1.10 sec
+5.	K (Click on “Add to Cart”) = 0.28 sec
+Total Execution Time:
+1.35 + 1.10 + 0.28 + 1.10 + 0.28 = 4.11 seconds
+•	Key hits (K): 2
+•	Pointing (P): 2
+•	Homing (H): 0 (mouse only)
+
+🧩 METHOD 2: Using Keyboard Shortcuts (Textual Interaction)
+Steps:
+1.	M (Mental preparation) = 1.35 sec
+2.	H (Move hand from mouse → keyboard) = 0.40 sec
+3.	K (Use arrow/tab keys to navigate to item) = 1.00 sec
+4.	K (Press Enter to select item) = 0.28 sec
+5.	K (Press shortcut key for “Add to Cart”, e.g., Alt + A) = 0.28 sec
+Total Execution Time:
+1.35 + 0.40 + 1.00 + 0.28 + 0.28 = 3.31 seconds
+•	Key hits (K): 3
+•	Homing (H): 1
+•	Pointing (P): 0
+🧭 SELECTION RULE:
+•	If the user prefers mouse interaction or is visually selecting from product images, use Method 1 (Mouse).
+•	If the user is experienced and wants faster navigation, use Method 2 (Keyboard Shortcuts) — it’s quicker and requires fewer physical movements.
+
+
+🧠 GOAL:
+Delete the mail.
+🧩 METHOD 1: Using Mouse (Graphical Interaction)
+Steps:
+1.	M (Mental preparation) = 1.35 sec
+o	User decides which mail to delete.
+2.	P (Point to the mail using mouse) = 1.10 sec
+3.	K (Click to select the mail) = 0.28 sec
+4.	P (Point to the “Delete” icon/button) = 1.10 sec
+5.	K (Click on “Delete”) = 0.28 sec
+Total Execution Time:
+1.35 + 1.10 + 0.28 + 1.10 + 0.28 = 4.11 seconds
+•	Key hits (K): 2
+•	Pointing (P): 2
+•	Homing (H): 0
+🧩 METHOD 2: Using Keyboard Shortcut (Textual Interaction)
+Steps:
+1.	M (Mental preparation) = 1.35 sec
+2.	H (Move hand from mouse → keyboard) = 0.40 sec
+3.	K (Use arrow keys to navigate to mail) = 1.00 sec
+4.	K (Press Delete key) = 0.28 sec
+Total Execution Time:
+1.35 + 0.40 + 1.00 + 0.28 = 3.03 seconds
+•	Key hits (K): 2
+•	Homing (H): 1
+•	Pointing (P): 0
+🧭 SELECTION RULE:
+•	If the user prefers visual selection or uses the mouse primarily, use Method 1 (Mouse) — it’s more intuitive and clear.
+•	If the user is experienced and wants to perform the task quickly, use Method 2 (Keyboard Shortcut) — it’s faster and involves fewer actions.
+
+
+🧠 GOAL:
+Close the window.
+🧩 METHOD 1: Using Mouse (Graphical Interaction — Click Close Button)
+Steps:
+1.	M (Mental preparation) = 1.35 sec
+o	User decides to close the window.
+2.	P (Point to the window’s close button [X]) = 1.10 sec
+3.	K (Click the close button) = 0.28 sec
+Total Execution Time:
+1.35 + 1.10 + 0.28 = 2.73 seconds
+•	Key hits (K): 1
+•	Pointing (P): 1
+•	Homing (H): 0 (mouse only)
+🧩 METHOD 2: Using Keyboard Shortcut (Textual Interaction — e.g., Alt+F4 or Ctrl+W)
+Steps:
+1.	M (Mental preparation) = 1.35 sec
+2.	H (Move hand to keyboard) = 0.40 sec
+3.	K (Press keyboard shortcut to close — e.g., Alt+F4 or Ctrl+W) = 0.28 sec
+Total Execution Time:
+1.35 + 0.40 + 0.28 = 2.03 seconds
+•	Key hits (K): 1
+•	Homing (H): 1
+•	Pointing (P): 0
+________________________________________
+🧭 SELECTION RULE:
+•	If the user prefers mouse interaction or the close button is visually obvious (e.g., single window on screen), use Method 1 (Mouse) — it’s straightforward and requires no knowledge of shortcuts.
+•	If the user is experienced or wants the fastest action (and their hands are already on the keyboard), use Method 2 (Keyboard Shortcut) — it’s quicker overall.
