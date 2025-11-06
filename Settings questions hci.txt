@@ -1,0 +1,164 @@
+1. Types of real-time applications of HCI
+
+ATMs and kiosks
+
+Mobile apps (WhatsApp, Instagram)
+
+Airplane cockpits and dashboards
+
+Gaming systems
+
+Smart home devices (Alexa, Google Home)
+
+🟢 HCI helps make these systems easy and safe to use.
+
+2. Types of memory
+
+Short-term memory – stores small info for a few seconds (like OTP).
+
+Long-term memory – stores knowledge and experience permanently.
+
+Sensory memory – holds visual or sound info for a very short time.
+
+3. Principles of good design and bad interface
+
+Good design: Simple, consistent, fast feedback, user control.
+Bad interface: Confusing layout, too many colors, unclear buttons, no feedback.
+
+4. Miller’s Law
+
+Humans can remember 7 ± 2 items at a time in short-term memory.
+🟢 So, interfaces should avoid showing too many options at once.
+
+5. Interaction styles (with pros, cons & example)
+Style	Example	Advantages	Disadvantages
+Command line	Windows CMD	Fast for experts	Hard for beginners
+Menu selection	ATM, mobile	Easy to learn	Slow for experts
+Form fill-in	Online forms	Structured input	Limited flexibility
+Direct manipulation	Drag-drop in mobile	Intuitive, visual	Needs graphics
+Natural language	Voice assistants	User-friendly	May misinterpret
+6. Ergonomics for UX/UI
+
+Designing interfaces that match human comfort and efficiency:
+
+Proper button size & spacing
+
+Readable fonts and contrast
+
+Easy reach on mobile screens
+
+Reduces strain and errors
+
+7. How 8 Golden Rules are applicable to your Figma design
+
+In WhatsApp prototype:
+
+Consistency in screens
+
+Shortcuts like “Send” button
+
+Clear feedback (ticks for messages)
+
+Easy navigation (back, home icons)
+
+Error prevention (confirmation before delete)
+
+8. Eight Golden Rules of Interface Design (Ben Shneiderman)
+
+Strive for consistency
+
+Enable shortcuts
+
+Offer informative feedback
+
+Design dialogs to yield closure
+
+Offer error prevention and simple handling
+
+Permit easy reversal of actions (undo)
+
+Support internal locus of control (user in charge)
+
+Reduce short-term memory load
+
+9. Intranet vs Internet
+Intranet	Internet
+Private network (organization use)	Public global network
+Limited access	Open access
+More secure	Less secure
+Example: Office portal	Example: Google, YouTube
+10. GUI vs Web Application
+GUI App	Web App
+Runs on local system	Runs in browser
+Needs installation	No installation
+Example: Paint, VLC	Example: Gmail, WhatsApp Web
+11. Types of UX/UI Evaluation
+
+Heuristic evaluation (expert checks rules)
+
+User testing (real users test app)
+
+Cognitive walkthrough (step-by-step analysis)
+
+Surveys & interviews
+
+A/B testing
+
+12. GOMS Model
+
+GOMS = Goals, Operators, Methods, Selection rules
+Used to analyze how users perform tasks and measure efficiency.
+🟢 Helps find faster ways for users to complete actions.
+
+13. Heuristic Evaluation
+
+Experts evaluate interface using 10 usability heuristics (like feedback, consistency, error prevention).
+🟢 Helps find design issues early before user testing.
+
+14. Cognitive Walkthrough
+
+Experts simulate a user’s thought process step-by-step to check how easily new users can learn the interface.
+
+15. Paradigms for Interaction
+
+Desktop paradigm – windows, icons, menus.
+
+Ubiquitous computing – smart devices everywhere.
+
+Virtual reality / AR – immersive interfaces.
+
+Conversational UI – chatbots, voice assistants.
+
+16. Five Stage Search Framework
+
+Define the problem
+
+Select source
+
+Formulate query
+
+Execute search
+
+Examine & refine results
+
+🟢 Used in search engines and databases.
+
+17. Dynamic Queries and Faceted Search
+
+Dynamic queries: Results update instantly as you change filters (e.g., price slider on Amazon).
+
+Faceted search: Filters by categories (e.g., brand, price, color).
+
+18. Designing for 10-foot interfaces principles
+
+(Used for TVs / large displays where user sits ~10 feet away)
+
+Large text and icons
+
+High contrast
+
+Simple navigation (remote control)
+
+Minimal typing
+
+Fewer on-screen elements
